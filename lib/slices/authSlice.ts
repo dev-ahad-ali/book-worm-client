@@ -31,6 +31,10 @@ export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWith
   }
 });
 
+export const logoutUser = createAsyncThunk('auth/logout', async () => {
+  await axiosSecure.post('/auth/logout');
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -38,11 +42,7 @@ const authSlice = createSlice({
     loading: true,
     error: null,
   },
-  reducers: {
-    logout: (state) => {
-      state.user = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(loadUser.pending, (state) => {
@@ -62,9 +62,11 @@ const authSlice = createSlice({
 
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;
