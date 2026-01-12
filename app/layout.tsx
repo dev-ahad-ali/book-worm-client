@@ -1,6 +1,5 @@
 import type React from 'react';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Providers from '@/lib/providers';
 
@@ -16,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className='dark'>
+    <html lang='en' className='bg-background'>
       <body className={`font-sans! antialiased`}>
         <Providers>{children}</Providers>
       </body>
