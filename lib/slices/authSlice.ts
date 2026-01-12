@@ -1,67 +1,70 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axiosSecure from '@/utils/axiosSecure';
 
-interface User {
-  id: string
-  name: string
-  email: string
-  photo?: string
-  profileImage?: string
-  role: "user" | "admin"
-}
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosSecure.post('/auth/register', payload);
+      return data.user;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message);
+    }
+  }
+);
 
-interface AuthState {
-  user: User | null
-  isAuthenticated: boolean
-  isLoading: boolean
-  error: string | null
-}
+export const loginUser = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosSecure.post('/auth/login', payload);
+    return data.user;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message);
+  }
+});
 
-const DEMO_USER: User = {
-  id: "user1",
-  name: "John Reader",
-  email: "user@example.com",
-  role: "user",
-}
-
-const DEMO_ADMIN: User = {
-  id: "admin1",
-  name: "Admin User",
-  email: "admin@example.com",
-  role: "admin",
-}
-
-const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
-}
+export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosSecure.get('/auth/me');
+    return data.user;
+  } catch {
+    return rejectWithValue(null);
+  }
+});
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState,
+  name: 'auth',
+  initialState: {
+    user: null,
+    loading: true,
+    error: null,
+  },
   reducers: {
-    loginStart: (state) => {
-      state.isLoading = true
-      state.error = null
-    },
-    loginSuccess: (state, action: PayloadAction<User>) => {
-      state.isLoading = false
-      state.isAuthenticated = true
-      state.user = action.payload
-      state.error = null
-    },
-    loginFailure: (state, action: PayloadAction<string>) => {
-      state.isLoading = false
-      state.error = action.payload
-    },
     logout: (state) => {
-      state.user = null
-      state.isAuthenticated = false
-      state.error = null
+      state.user = null;
     },
   },
-})
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(loadUser.rejected, (state) => {
+        state.loading = false;
+      })
 
-export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
-export default authSlice.reducer
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      });
+  },
+});
+
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;
