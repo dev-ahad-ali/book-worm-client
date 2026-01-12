@@ -5,17 +5,28 @@ const axiosSecure = axios.create({
   withCredentials: true,
 });
 
+// Auto-refresh access token
 axiosSecure.interceptors.response.use(
-  (res) => res,
+  (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-        {},
-        { withCredentials: true }
-      );
-      return axiosSecure(error.config);
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
+
+        return axiosSecure(originalRequest);
+      } catch {
+        return Promise.reject(error);
+      }
     }
+
     return Promise.reject(error);
   }
 );
