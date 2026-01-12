@@ -1,0 +1,98 @@
+[
+  {
+    "_id": "book1",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Fiction",
+    "description": "A classic tale of love, wealth, and the American Dream set in the Jazz Age.",
+    "coverImage": "https://images.unsplash.com/photo-1507842217343-583f20270319?w=300&h=450&fit=crop",
+    "totalPages": 180,
+    "averageRating": 4.5,
+    "reviewCount": 1250,
+    "addedToShelvesCount": 5600
+  },
+  {
+    "_id": "book2",
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genre": "Drama",
+    "description": "A gripping tale of racial injustice and childhood innocence in the American South.",
+    "coverImage": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop",
+    "totalPages": 281,
+    "averageRating": 4.8,
+    "reviewCount": 2100,
+    "addedToShelvesCount": 8900
+  },
+  {
+    "_id": "book3",
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Science Fiction",
+    "description": "A dystopian novel depicting a totalitarian state and the erosion of individual freedom.",
+    "coverImage": "https://images.unsplash.com/photo-1531206715849-bc28c7be4718?w=300&h=450&fit=crop",
+    "totalPages": 328,
+    "averageRating": 4.6,
+    "reviewCount": 1800,
+    "addedToShelvesCount": 7200
+  },
+  {
+    "_id": "book4",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "Romance",
+    "description": "A witty romance about love and social class in Regency England.",
+    "coverImage": "https://images.unsplash.com/photo-1514306688989-be7149c159e4?w=300&h=450&fit=crop",
+    "totalPages": 432,
+    "averageRating": 4.7,
+    "reviewCount": 2500,
+    "addedToShelvesCount": 9200
+  },
+  {
+    "_id": "book5",
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "genre": "Coming of Age",
+    "description": "A teenage boy's journey through New York City after being expelled from school.",
+    "coverImage": "https://images.unsplash.com/photo-1507842217343-583f20270319?w=300&h=450&fit=crop",
+    "totalPages": 214,
+    "averageRating": 4.2,
+    "reviewCount": 980,
+    "addedToShelvesCount": 4500
+  },
+  {
+    "_id": "book6",
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "Fantasy",
+    "description": "An adventure story about a hobbit on a quest to reclaim treasure from a dragon.",
+    "coverImage": "https://images.unsplash.com/photo-1516979187457-635ffe35ff7d?w=300&h=450&fit=crop",
+    "totalPages": 310,
+    "averageRating": 4.9,
+    "reviewCount": 3200,
+    "addedToShelvesCount": 12000
+  },
+  {
+    "_id": "book7",
+    "title": "Sapiens",
+    "author": "Yuval Noah Harari",
+    "genre": "Non-Fiction",
+    "description": "A sweeping history of humankind from the Stone Age to the modern era.",
+    "coverImage": "https://images.unsplash.com/photo-1507842217343-583f20270319?w=300&h=450&fit=crop",
+    "totalPages": 512,
+    "averageRating": 4.4,
+    "reviewCount": 1600,
+    "addedToShelvesCount": 6800
+  },
+  {
+    "_id": "book8",
+    "title": "The Silent Patient",
+    "author": "Alex Michaelides",
+    "genre": "Mystery",
+    "description": "A psychological thriller about a woman who shoots her husband and then never speaks again.",
+    "coverImage": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop",
+    "totalPages": 336,
+    "averageRating": 4.3,
+    "reviewCount": 1450,
+    "addedToShelvesCount": 5900
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "bookId": "book1",
+    "shelfType": "read",
+    "addedDate": "2024-06-15",
+    "pagesRead": 180,
+    "startDate": "2024-06-01",
+    "finishDate": "2024-06-15"
+  },
+  {
+    "bookId": "book2",
+    "shelfType": "read",
+    "addedDate": "2024-05-20",
+    "pagesRead": 281,
+    "startDate": "2024-05-01",
+    "finishDate": "2024-05-20"
+  },
+  {
+    "bookId": "book3",
+    "shelfType": "currentlyReading",
+    "addedDate": "2024-12-01",
+    "pagesRead": 150,
+    "startDate": "2024-12-01"
+  },
+  {
+    "bookId": "book4",
+    "shelfType": "wantToRead",
+    "addedDate": "2024-12-10"
+  },
+  {
+    "bookId": "book5",
+    "shelfType": "read",
+    "addedDate": "2024-08-10",
+    "pagesRead": 214,
+    "startDate": "2024-08-01",
+    "finishDate": "2024-08-10"
+  },
+  {
+    "bookId": "book6",
+    "shelfType": "currentlyReading",
+    "addedDate": "2024-11-15",
+    "pagesRead": 180,
+    "startDate": "2024-11-15"
+  }
+]

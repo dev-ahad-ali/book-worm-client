@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "activity1",
+    "userId": "user2",
+    "userName": "Mike",
+    "action": "added",
+    "bookId": "book1",
+    "bookTitle": "The Great Gatsby",
+    "shelfType": "read",
+    "timestamp": "2024-12-13T10:30:00Z"
+  },
+  {
+    "_id": "activity2",
+    "userId": "user3",
+    "userName": "Emma",
+    "action": "rated",
+    "bookId": "book2",
+    "bookTitle": "To Kill a Mockingbird",
+    "rating": 5,
+    "timestamp": "2024-12-12T15:45:00Z"
+  },
+  {
+    "_id": "activity3",
+    "userId": "user4",
+    "userName": "James",
+    "action": "finished",
+    "bookId": "book3",
+    "bookTitle": "1984",
+    "timestamp": "2024-12-11T08:20:00Z"
+  },
+  {
+    "_id": "activity4",
+    "userId": "user5",
+    "userName": "Lisa",
+    "action": "added",
+    "bookId": "book4",
+    "bookTitle": "Pride and Prejudice",
+    "shelfType": "currentlyReading",
+    "timestamp": "2024-12-10T14:15:00Z"
+  }
+]

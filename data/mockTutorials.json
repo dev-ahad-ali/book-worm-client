@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "tut1",
+    "title": "Why You Should Read More",
+    "youtubeId": "dQw4w9WgXcQ",
+    "description": "Discover the benefits of reading and how to build a reading habit.",
+    "createdDate": "2024-01-01"
+  },
+  {
+    "_id": "tut2",
+    "title": "Book Recommendations for Beginners",
+    "youtubeId": "dQw4w9WgXcQ",
+    "description": "Great books to start with if you're new to reading.",
+    "createdDate": "2024-01-05"
+  },
+  {
+    "_id": "tut3",
+    "title": "How to Write a Book Review",
+    "youtubeId": "dQw4w9WgXcQ",
+    "description": "Tips and tricks for writing engaging book reviews.",
+    "createdDate": "2024-01-10"
+  }
+]

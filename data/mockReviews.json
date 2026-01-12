@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "review1",
+    "bookId": "book1",
+    "userId": "user1",
+    "userName": "Sarah",
+    "rating": 5,
+    "reviewText": "Absolutely brilliant! A masterpiece of American literature.",
+    "status": "approved",
+    "createdDate": "2024-01-15"
+  },
+  {
+    "_id": "review2",
+    "bookId": "book1",
+    "userId": "user2",
+    "userName": "Mike",
+    "rating": 4,
+    "reviewText": "Great book, though a bit slow at times.",
+    "status": "approved",
+    "createdDate": "2024-01-18"
+  },
+  {
+    "_id": "review3",
+    "bookId": "book2",
+    "userId": "user3",
+    "userName": "Emma",
+    "rating": 5,
+    "reviewText": "One of the most impactful books I've ever read.",
+    "status": "approved",
+    "createdDate": "2024-01-20"
+  },
+  {
+    "_id": "review4",
+    "bookId": "book3",
+    "userId": "user4",
+    "userName": "James",
+    "rating": 4,
+    "reviewText": "Dark and thought-provoking. Highly recommended.",
+    "status": "approved",
+    "createdDate": "2024-02-01"
+  },
+  {
+    "_id": "review5",
+    "bookId": "book4",
+    "userId": "user5",
+    "userName": "Lisa",
+    "rating": 5,
+    "reviewText": "A timeless romance that never gets old. Jane Austen's wit is unmatched!",
+    "status": "pending",
+    "createdDate": "2024-12-10"
+  },
+  {
+    "_id": "review6",
+    "bookId": "book5",
+    "userId": "user6",
+    "userName": "David",
+    "rating": 3,
+    "reviewText": "Interesting perspective but felt a bit dated for modern readers.",
+    "status": "pending",
+    "createdDate": "2024-12-11"
+  },
+  {
+    "_id": "review7",
+    "bookId": "book6",
+    "userId": "user1",
+    "userName": "Sarah",
+    "rating": 5,
+    "reviewText": "An epic adventure from start to finish. Tolkien is a genius!",
+    "status": "pending",
+    "createdDate": "2024-12-12"
+  },
+  {
+    "_id": "review8",
+    "bookId": "book7",
+    "userId": "user3",
+    "userName": "Emma",
+    "rating": 4,
+    "reviewText": "Mind-opening exploration of human history. Highly informative.",
+    "status": "pending",
+    "createdDate": "2024-12-13"
+  }
+]

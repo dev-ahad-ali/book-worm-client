@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "genre1",
+    "name": "Fiction",
+    "description": "Imaginary stories and novels",
+    "icon": "BookOpen"
+  },
+  {
+    "_id": "genre2",
+    "name": "Mystery",
+    "description": "Thrilling detective and crime stories",
+    "icon": "Search"
+  },
+  {
+    "_id": "genre3",
+    "name": "Science Fiction",
+    "description": "Futuristic and speculative stories",
+    "icon": "Rocket"
+  },
+  {
+    "_id": "genre4",
+    "name": "Fantasy",
+    "description": "Magical and mythical worlds",
+    "icon": "Wand2"
+  },
+  {
+    "_id": "genre5",
+    "name": "Romance",
+    "description": "Love and relationship stories",
+    "icon": "Heart"
+  },
+  {
+    "_id": "genre6",
+    "name": "Drama",
+    "description": "Emotional and intense narratives",
+    "icon": "Drama"
+  },
+  {
+    "_id": "genre7",
+    "name": "Non-Fiction",
+    "description": "Educational and factual content",
+    "icon": "BookMarked"
+  },
+  {
+    "_id": "genre8",
+    "name": "Coming of Age",
+    "description": "Young adult personal growth stories",
+    "icon": "Sprout"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "goal1",
+    "userId": "demo-user",
+    "annualGoal": 50,
+    "booksReadThisYear": 3,
+    "totalPagesRead": 695,
+    "averageRating": 4.5,
+    "favoriteGenre": "Fiction",
+    "readingStreak": 12,
+    "startDate": "2024-01-01"
+  }
+]

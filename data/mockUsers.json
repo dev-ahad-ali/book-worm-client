@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "demo-user",
+    "name": "Demo User",
+    "email": "user@example.com",
+    "role": "user",
+    "following": ["user2", "user3", "user4"],
+    "followers": ["user1", "user5"],
+    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+    "joinDate": "2024-01-15"
+  },
+  {
+    "_id": "user2",
+    "name": "Mike Johnson",
+    "email": "mike@example.com",
+    "role": "user",
+    "following": ["user3"],
+    "followers": ["demo-user"],
+    "profileImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+    "joinDate": "2024-02-20"
+  },
+  {
+    "_id": "user3",
+    "name": "Emma Wilson",
+    "email": "emma@example.com",
+    "role": "user",
+    "following": ["user2"],
+    "followers": ["demo-user", "user4"],
+    "profileImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+    "joinDate": "2024-03-10"
+  },
+  {
+    "_id": "user4",
+    "name": "James Smith",
+    "email": "james@example.com",
+    "role": "user",
+    "following": ["demo-user"],
+    "followers": ["user3"],
+    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+    "joinDate": "2024-04-05"
+  },
+  {
+    "_id": "user5",
+    "name": "Lisa Chen",
+    "email": "lisa@example.com",
+    "role": "user",
+    "following": [],
+    "followers": ["demo-user"],
+    "profileImage": "https://images.unsplash.com/photo-1517849845537-1d51a20414de?w=100&h=100&fit=crop",
+    "joinDate": "2024-05-12"
+  }
+]
