@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { createGenre, updateGenre, deleteGenre } from '@/lib/slices/genresSlice';
+import { fetchGenres, createGenre, updateGenre, deleteGenre } from '@/lib/slices/genresSlice';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -22,11 +22,14 @@ export default function ManageGenresPage() {
   const { genres, isLoading, error } = useAppSelector((state) => state.genres);
   const { books } = useAppSelector((state) => state.books);
   const dispatch = useAppDispatch();
-
   const [openDialog, setOpenDialog] = useState(false);
   const [editingGenre, setEditingGenre] = useState<Genre | null>(null);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
 
   const getGenreBookCount = (genreName: string) => {
     return books.filter((book) => book.genre === genreName).length;
@@ -74,13 +77,8 @@ export default function ManageGenresPage() {
     }
   };
 
-  if (isLoading) {
-    return <div className='p-8 text-center'>Loading genres...</div>;
-  }
-
-  if (error) {
-    return <div className='p-8 text-center text-red-500'>Error: {error}</div>;
-  }
+  if (isLoading) return <div className='p-8 text-center'>Loading genres...</div>;
+  if (error) return <div className='p-8 text-center text-red-500'>Error: {error}</div>;
 
   return (
     <>

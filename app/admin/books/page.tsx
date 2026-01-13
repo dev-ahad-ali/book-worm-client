@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { fetchBooks, createBook, editBook, removeBook } from '@/lib/slices/booksSlice';
 import Navbar from '@/components/navbar';
@@ -26,7 +26,6 @@ export default function ManageBooksPage() {
   const { books, isLoading, error } = useAppSelector((state) => state.books);
   const dispatch = useAppDispatch();
   const [isUploading, setIsUploading] = useState(false);
-
   const [openDialog, setOpenDialog] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +37,10 @@ export default function ManageBooksPage() {
     coverImage: '',
     totalPages: 0,
   });
+
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, [dispatch]);
 
   const handleOpenDialog = (book?: Book) => {
     if (book) {
@@ -112,13 +115,8 @@ export default function ManageBooksPage() {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   const totalPages = Math.ceil(books.length / ITEMS_PER_PAGE);
   const paginatedBooks = books.slice(
