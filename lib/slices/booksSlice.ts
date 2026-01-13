@@ -42,6 +42,10 @@ export const createBook = createAsyncThunk(
   'books/create',
   async (bookData: Omit<Book, '_id'>, { rejectWithValue }) => {
     try {
+      if (!bookData.coverImage) {
+        throw new Error('Cover image is required');
+      }
+
       const response = await axios.post<Book>('/api/books', bookData);
       return response.data;
     } catch (error) {

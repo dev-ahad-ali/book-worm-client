@@ -25,6 +25,7 @@ const ITEMS_PER_PAGE = 5;
 export default function ManageBooksPage() {
   const { books, isLoading, error } = useAppSelector((state) => state.books);
   const dispatch = useAppDispatch();
+  const [isUploading, setIsUploading] = useState(false);
 
   const [openDialog, setOpenDialog] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
@@ -63,7 +64,7 @@ export default function ManageBooksPage() {
     setOpenDialog(true);
   };
 
-  const handleImageSelect = (imageUrl: string) => {
+  const handleImageUpload = (imageUrl: string) => {
     setFormData((prev) => ({
       ...prev,
       coverImage: imageUrl,
@@ -148,11 +149,10 @@ export default function ManageBooksPage() {
                 </DialogHeader>
                 <div className='space-y-4'>
                   <ImageUpload
-                    onImageSelect={handleImageSelect}
+                    onImageSelect={handleImageUpload}
                     currentImage={formData.coverImage}
                     label='Book Cover Image'
                   />
-
                   <div>
                     <label className='text-sm font-medium'>Title</label>
                     <Input
@@ -196,8 +196,8 @@ export default function ManageBooksPage() {
                       className='bg-input border-border mt-1'
                     />
                   </div>
-                  <Button className='w-full' onClick={handleSubmit}>
-                    {editingBook ? 'Update Book' : 'Add Book'}
+                  <Button className='w-full' onClick={handleSubmit} disabled={isUploading}>
+                    {isUploading ? 'Uploading...' : editingBook ? 'Update Book' : 'Add Book'}
                   </Button>
                 </div>
               </DialogContent>
