@@ -8,6 +8,7 @@ interface User {
   email: string;
   photo?: string;
   role: 'user' | 'admin';
+  createdAt?: string;
 }
 
 interface AuthState {
