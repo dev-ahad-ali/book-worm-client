@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import type { RootState } from '../store';
+import { axiosSecure as axios } from '@/utils/axiosSecure';
 
 interface User {
   id: string;

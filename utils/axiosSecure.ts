@@ -31,4 +31,4 @@ axiosSecure.interceptors.response.use(
   }
 );
 
-export default axiosSecure;
+export { axiosSecure };

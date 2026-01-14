@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import axios, { type AxiosError } from 'axios';
+import { axiosSecure as axios } from '@/utils/axiosSecure';
+import { type AxiosError } from 'axios';
 
 export type Book = {
   _id: string;

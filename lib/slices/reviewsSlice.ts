@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import axios, { type AxiosError } from 'axios';
+import { type AxiosError } from 'axios';
+import { axiosSecure as axios } from '@/utils/axiosSecure';
 
 export interface Review {
   _id: string;

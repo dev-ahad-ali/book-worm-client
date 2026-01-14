@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { axiosSecure as axios } from '@/utils/axiosSecure';
+import { AxiosError } from 'axios';
 
 interface BookGenreStat {
   _id: string;
