@@ -11,6 +11,9 @@ export interface ReadingGoal {
   favoriteGenre: string;
   readingStreak: number;
   startDate: string;
+  monthlyProgress: Array<{ month: string; count: number }>;
+  weeklyPages: Array<{ week: string; pages: number }>;
+  genreDistribution: Array<{ name: string; value: number }>;
 }
 
 interface ReadingGoalsState {
@@ -31,8 +34,8 @@ export const fetchReadingStats = createAsyncThunk(
   'readingGoals/fetchStats',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/api/reading-stats');
-      return response.data;
+      const response = await axios.get<{ goal: ReadingGoal }>('/api/reading-stats');
+      return response.data.goal;
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       return rejectWithValue(axiosError.response?.data?.message || 'Failed to fetch reading stats');
@@ -44,7 +47,9 @@ export const updateAnnualGoal = createAsyncThunk(
   'readingGoals/updateAnnual',
   async (goal: number, { rejectWithValue }) => {
     try {
-      const response = await axios.put('/api/reading-stats/goal', { annualGoal: goal });
+      const response = await axios.put<ReadingGoal>('/api/reading-stats/goal', {
+        annualGoal: goal,
+      });
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
@@ -64,17 +69,25 @@ const readingGoalsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchReadingStats.fulfilled, (state, action) => {
-        state.currentGoal = action.payload.goal;
+        state.currentGoal = action.payload;
         state.isLoading = false;
       })
       .addCase(fetchReadingStats.rejected, (state, action) => {
         state.error = action.payload as string;
         state.isLoading = false;
       })
+      .addCase(updateAnnualGoal.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(updateAnnualGoal.fulfilled, (state, action) => {
         if (state.currentGoal) {
           state.currentGoal.annualGoal = action.payload.annualGoal;
         }
+        state.isLoading = false;
+      })
+      .addCase(updateAnnualGoal.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isLoading = false;
       });
   },
 });
