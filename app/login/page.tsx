@@ -1,11 +1,9 @@
 'use client';
 
-import type React from 'react';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/lib/hooks';
-import { loginSuccess } from '@/lib/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { loginUser } from '@/lib/slices/authSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,39 +13,16 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { loading, error } = useAppSelector((state) => state.auth);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    const result = await dispatch(loginUser({ email, password }));
 
-    // Demo credentials
-    if (email === 'user@example.com' && password === 'password') {
-      dispatch(
-        loginSuccess({
-          id: 'user1',
-          name: 'John Reader',
-          email: 'user@example.com',
-          role: 'user',
-        })
-      );
-      router.push('/library');
-    } else if (email === 'admin@example.com' && password === 'password') {
-      dispatch(
-        loginSuccess({
-          id: 'admin1',
-          name: 'Admin User',
-          email: 'admin@example.com',
-          role: 'admin',
-        })
-      );
-      router.push('/admin/dashboard');
-    } else {
-      setError(
-        "Invalid email or password. Try user@example.com / admin@example.com with password 'password'"
-      );
+    if (loginUser.fulfilled.match(result)) {
+      router.push(result.payload.role === 'admin' ? '/admin/dashboard' : '/library');
     }
   };
 
@@ -69,7 +44,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleLogin} className='space-y-4'>
               {error && (
-                <div className='bg-destructive/10 border-destructive/30 text-destructive rounded-lg border p-3 text-sm'>
+                <div className='border-destructive/30 bg-destructive/10 text-destructive rounded-lg border p-3 text-sm'>
                   {error}
                 </div>
               )}
@@ -84,7 +59,8 @@ export default function LoginPage() {
                   placeholder='user@example.com'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className='bg-input border-border'
+                  className='border-border bg-input'
+                  required
                 />
               </div>
 
@@ -98,30 +74,15 @@ export default function LoginPage() {
                   placeholder='••••••••'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className='bg-input border-border'
+                  className='border-border bg-input'
+                  required
                 />
               </div>
 
-              <Button type='submit' className='w-full'>
-                Sign In
+              <Button type='submit' className='w-full' disabled={loading}>
+                {loading ? 'Signing In...' : 'Sign In'}
               </Button>
             </form>
-
-            <div className='border-border mt-6 space-y-4 border-t pt-6'>
-              <p className='text-muted-foreground text-center text-xs'>Demo Credentials:</p>
-              <div className='space-y-2 text-xs'>
-                <div className='bg-muted/50 border-border/50 rounded border p-2'>
-                  <p className='text-foreground font-medium'>User Demo:</p>
-                  <p className='text-muted-foreground'>Email: user@example.com</p>
-                  <p className='text-muted-foreground'>Password: password</p>
-                </div>
-                <div className='bg-muted/50 border-border/50 rounded border p-2'>
-                  <p className='text-foreground font-medium'>Admin Demo:</p>
-                  <p className='text-muted-foreground'>Email: admin@example.com</p>
-                  <p className='text-muted-foreground'>Password: password</p>
-                </div>
-              </div>
-            </div>
 
             <p className='text-muted-foreground mt-6 text-center text-sm'>
               Don{"'"}t have an account?{' '}
