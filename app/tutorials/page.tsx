@@ -1,93 +1,89 @@
-"use client"
+'use client';
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAppSelector, useAppDispatch } from "@/lib/hooks"
-import { setTutorials } from "@/lib/slices/tutorialsSlice"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import mockTutorials from "@/data/mockTutorials.json"
-import { Play } from "lucide-react"
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { fetchTutorials } from '@/lib/slices/tutorialsSlice';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Play, Loader } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
+import { extractYoutubeId } from '@/lib/utils';
 
 export default function TutorialsPage() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth)
-  const { tutorials } = useAppSelector((state) => state.tutorials)
-  const dispatch = useAppDispatch()
-  const router = useRouter()
+  const { tutorials, isLoading, error } = useAppSelector((state) => state.tutorials);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login")
-    }
-  }, [isAuthenticated, router])
+    dispatch(fetchTutorials());
+  }, [dispatch]);
 
   useEffect(() => {
-    if (tutorials.length === 0) {
-      dispatch(setTutorials(mockTutorials as any))
+    if (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error loading tutorials',
+        description: error,
+      });
     }
-  }, [dispatch, tutorials.length])
-
-  if (!isAuthenticated) {
-    return null
-  }
+  }, [error]);
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Header */}
-          <div className="mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Tutorials & Tips</h1>
-            <p className="text-muted-foreground">Learn how to get the most out of BookWorm and improve your reading</p>
+      <main className='bg-background min-h-screen'>
+        <div className='mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8'>
+          <div className='mb-12'>
+            <h1 className='text-foreground mb-2 text-3xl font-bold md:text-4xl'>
+              Tutorials & Tips
+            </h1>
+            <p className='text-muted-foreground'>
+              Learn how to get the most out of BookWorm and improve your reading
+            </p>
           </div>
 
-          {/* Tutorials Grid */}
-          {tutorials.length === 0 ? (
-            <Card className="bg-card border-border/50">
-              <CardContent className="pt-12 pb-12 text-center">
-                <p className="text-muted-foreground">No tutorials available yet. Check back soon!</p>
-              </CardContent>
-            </Card>
+          {isLoading ? (
+            <div className='flex h-64 items-center justify-center'>
+              <Loader className='animate-spin' />
+            </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
               {tutorials.map((tutorial) => (
                 <Card
                   key={tutorial._id}
-                  className="bg-card border-border/50 overflow-hidden hover:shadow-lg transition-shadow"
+                  className='bg-card border-border/50 overflow-hidden transition-shadow hover:shadow-lg'
                 >
-                  {/* Video Thumbnail */}
-                  <div className="relative w-full aspect-video bg-black group overflow-hidden">
+                  <div className='group relative aspect-video w-full overflow-hidden bg-black'>
                     <img
-                      src={`https://img.youtube.com/vi/${tutorial.youtubeId}/maxresdefault.jpg`}
+                      src={`https://img.youtube.com/vi/${extractYoutubeId(tutorial.youtubeId)}/maxresdefault.jpg`}
                       alt={tutorial.title}
-                      className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
+                      className='h-full w-full object-cover transition-opacity group-hover:opacity-75'
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
-                      <Play className="w-12 h-12 text-white fill-white" />
+                    <div className='absolute inset-0 flex items-center justify-center bg-black/30 transition-colors group-hover:bg-black/50'>
+                      <Play className='h-12 w-12 fill-white text-white' />
                     </div>
                   </div>
 
                   <CardHeader>
-                    <CardTitle className="line-clamp-2 text-lg">{tutorial.title}</CardTitle>
+                    <CardTitle className='line-clamp-2 text-lg'>{tutorial.title}</CardTitle>
                   </CardHeader>
 
                   {tutorial.description && (
                     <CardContent>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{tutorial.description}</p>
+                      <p className='text-muted-foreground line-clamp-2 text-sm'>
+                        {tutorial.description}
+                      </p>
                     </CardContent>
                   )}
 
-                  {/* Watch Button */}
-                  <div className="px-6 pb-4">
+                  <div className='px-6 pb-4'>
                     <a
-                      href={`https://www.youtube.com/watch?v=${tutorial.youtubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity text-sm font-medium"
+                      href={tutorial.youtubeId}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='bg-primary text-primary-foreground inline-flex w-full items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90'
                     >
-                      <Play className="w-4 h-4" />
+                      <Play className='h-4 w-4' />
                       Watch Video
                     </a>
                   </div>
@@ -95,9 +91,19 @@ export default function TutorialsPage() {
               ))}
             </div>
           )}
+
+          {!isLoading && tutorials.length === 0 && (
+            <Card className='bg-card border-border/50'>
+              <CardContent className='pt-12 pb-12 text-center'>
+                <p className='text-muted-foreground'>
+                  No tutorials available yet. Check back soon!
+                </p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </main>
       <Footer />
     </>
-  )
+  );
 }
