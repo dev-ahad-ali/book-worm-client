@@ -100,6 +100,23 @@ export const fetchBookDetails = createAsyncThunk(
   }
 );
 
+export const fetchRecommendations = createAsyncThunk(
+  'books/fetchRecommendations',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get<{
+        type: 'personalized' | 'fallback';
+        books: Book[];
+        genres?: string[];
+      }>('/api/recommendations');
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(axiosError.response?.data?.message || 'Failed to get recommendations');
+    }
+  }
+);
+
 const booksSlice = createSlice({
   name: 'books',
   initialState,
@@ -149,6 +166,18 @@ const booksSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchBookDetails.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isLoading = false;
+      })
+      .addCase(fetchRecommendations.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchRecommendations.fulfilled, (state, action) => {
+        state.books = action.payload.books;
+        state.isLoading = false;
+      })
+      .addCase(fetchRecommendations.rejected, (state, action) => {
         state.error = action.payload as string;
         state.isLoading = false;
       });
