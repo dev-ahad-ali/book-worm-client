@@ -86,6 +86,20 @@ export const fetchFilteredBooks = createAsyncThunk(
   }
 );
 
+export const fetchBookDetails = createAsyncThunk(
+  'books/fetchDetails',
+  async (bookId: string, { rejectWithValue }) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response = await axios.get<{ book: Book; reviews: any[] }>(`/api/books/${bookId}`);
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(axiosError.response?.data?.message || 'Failed to fetch book details');
+    }
+  }
+);
+
 const booksSlice = createSlice({
   name: 'books',
   initialState,
@@ -120,6 +134,21 @@ const booksSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchFilteredBooks.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isLoading = false;
+      })
+      .addCase(fetchBookDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchBookDetails.fulfilled, (state, action) => {
+        const existingBook = state.books.find((b) => b._id === action.payload.book._id);
+        if (!existingBook) {
+          state.books.push(action.payload.book);
+        }
+        state.isLoading = false;
+      })
+      .addCase(fetchBookDetails.rejected, (state, action) => {
         state.error = action.payload as string;
         state.isLoading = false;
       });

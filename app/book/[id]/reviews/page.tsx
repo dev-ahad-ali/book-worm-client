@@ -1,155 +1,167 @@
-"use client"
+'use client';
 
-import type React from "react"
-
-import { useState } from "react"
-import { useRouter, useParams } from "next/navigation"
-import { useAppSelector, useAppDispatch } from "@/lib/hooks"
-import { addReview } from "@/lib/slices/reviewsSlice"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Star } from "lucide-react"
+import { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { addReview } from '@/lib/slices/reviewsSlice';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Star } from 'lucide-react';
 
 export default function WriteReviewPage() {
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
-  const { books } = useAppSelector((state) => state.books)
-  const dispatch = useAppDispatch()
-  const router = useRouter()
-  const params = useParams()
-  const bookId = params.id as string
+  const { user } = useAppSelector((state) => state.auth);
+  const { books, isLoading } = useAppSelector((state) => state.books);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const params = useParams();
+  const bookId = params.id as string;
 
-  const [rating, setRating] = useState(0)
-  const [reviewText, setReviewText] = useState("")
-  const [error, setError] = useState("")
-  const [submitted, setSubmitted] = useState(false)
+  const [rating, setRating] = useState(0);
+  const [reviewText, setReviewText] = useState('');
+  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const book = books.find((b) => b._id === bookId)
+  const book = books.find((b) => b._id === bookId);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
 
     if (!rating || !reviewText.trim()) {
-      setError("Please provide a rating and review text")
-      return
+      setError('Please provide a rating and review text');
+      return;
     }
 
     if (reviewText.length < 10) {
-      setError("Review must be at least 10 characters long")
-      return
+      setError('Review must be at least 10 characters long');
+      return;
     }
 
-    dispatch(
-      addReview({
-        _id: `review-${Date.now()}`,
-        bookId,
-        userId: user!.id,
-        userName: user!.name,
-        rating,
-        reviewText,
-        status: "pending",
-        createdDate: new Date().toISOString(),
-      }),
-    )
+    try {
+      await dispatch(
+        addReview({
+          bookId,
+          userId: user!.id,
+          userName: user!.name,
+          rating,
+          reviewText,
+          status: 'pending',
+          createdDate: new Date().toISOString(),
+        })
+      ).unwrap();
 
-    setSubmitted(true)
-    setTimeout(() => router.push(`/book/${bookId}`), 2000)
+      setSubmitted(true);
+      setTimeout(() => router.push(`/book/${bookId}`), 2000);
+    } catch (err) {
+      // setError(err as || 'Failed to submit review');
+      console.log(err);
+    }
+  };
+
+  if (isLoading) {
+    return <div className='p-8 text-center'>Loading...</div>;
   }
 
-  if (!isAuthenticated || !book) {
-    return null
+  if (!book) {
+    return <div className='p-8 text-center'>Book not found</div>;
   }
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-background">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <Button variant="outline" onClick={() => router.back()} className="mb-6 bg-transparent">
+      <main className='bg-background min-h-screen'>
+        <div className='mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8'>
+          <Button variant='outline' onClick={() => router.back()} className='mb-6 bg-transparent'>
             ← Back to Book
           </Button>
 
-          <div className="space-y-6">
+          <div className='space-y-6'>
             {/* Book Info */}
-            <div className="flex gap-4">
-              <div className="w-16 h-24 rounded overflow-hidden bg-muted flex-shrink-0">
+            <div className='flex gap-4'>
+              <div className='bg-muted h-24 w-16 flex-shrink-0 overflow-hidden rounded'>
                 <img
-                  src={book.coverImage || "/placeholder.svg"}
+                  src={book.coverImage || '/placeholder.svg'}
                   alt={book.title}
-                  className="w-full h-full object-cover"
+                  className='h-full w-full object-cover'
                 />
               </div>
-              <div className="flex-grow">
-                <h2 className="text-xl font-bold text-foreground">{book.title}</h2>
-                <p className="text-muted-foreground">by {book.author}</p>
+              <div className='flex-grow'>
+                <h2 className='text-foreground text-xl font-bold'>{book.title}</h2>
+                <p className='text-muted-foreground'>by {book.author}</p>
               </div>
             </div>
 
             {/* Review Form */}
-            <Card className="bg-card border-border/50">
+            <Card className='bg-card border-border/50'>
               <CardHeader>
                 <CardTitle>Write Your Review</CardTitle>
               </CardHeader>
               <CardContent>
                 {submitted ? (
-                  <div className="p-6 text-center space-y-3 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
-                    <p className="text-green-800 dark:text-green-200 font-medium">Review submitted successfully!</p>
-                    <p className="text-sm text-green-700 dark:text-green-300">
-                      Your review is pending approval. You'll be redirected shortly...
+                  <div className='space-y-3 rounded-lg border border-green-200 bg-green-50 p-6 text-center dark:border-green-800 dark:bg-green-950'>
+                    <p className='font-medium text-green-800 dark:text-green-200'>
+                      Review submitted successfully!
+                    </p>
+                    <p className='text-sm text-green-700 dark:text-green-300'>
+                      Your review is pending approval. Youll be redirected shortly...
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className='space-y-6'>
                     {error && (
-                      <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-sm text-destructive">
+                      <div className='bg-destructive/10 border-destructive/30 text-destructive rounded-lg border p-3 text-sm'>
                         {error}
                       </div>
                     )}
 
                     {/* Rating */}
-                    <div className="space-y-3">
-                      <label className="text-sm font-medium text-foreground">Rating</label>
-                      <div className="flex gap-2">
+                    <div className='space-y-3'>
+                      <label className='text-foreground text-sm font-medium'>Rating</label>
+                      <div className='flex gap-2'>
                         {[1, 2, 3, 4, 5].map((star) => (
                           <button
                             key={star}
-                            type="button"
+                            type='button'
                             onClick={() => setRating(star)}
-                            className="transition-transform hover:scale-110"
+                            className='transition-transform hover:scale-110'
                           >
                             <Star
-                              className={`w-8 h-8 ${
+                              className={`h-8 w-8 ${
                                 star <= rating
-                                  ? "fill-yellow-500 text-yellow-500"
-                                  : "text-muted-foreground hover:text-yellow-500"
+                                  ? 'fill-yellow-500 text-yellow-500'
+                                  : 'text-muted-foreground hover:text-yellow-500'
                               }`}
                             />
                           </button>
                         ))}
                       </div>
-                      {rating > 0 && <p className="text-sm text-muted-foreground">{rating} out of 5 stars</p>}
+                      {rating > 0 && (
+                        <p className='text-muted-foreground text-sm'>{rating} out of 5 stars</p>
+                      )}
                     </div>
 
                     {/* Review Text */}
-                    <div className="space-y-3">
-                      <label htmlFor="review" className="text-sm font-medium text-foreground">
+                    <div className='space-y-3'>
+                      <label htmlFor='review' className='text-foreground text-sm font-medium'>
                         Your Review
                       </label>
                       <Textarea
-                        id="review"
-                        placeholder="Share your thoughts about this book..."
+                        id='review'
+                        placeholder='Share your thoughts about this book...'
                         value={reviewText}
                         onChange={(e) => setReviewText(e.target.value)}
                         rows={6}
-                        className="bg-input border-border resize-none"
+                        className='bg-input border-border resize-none'
                       />
-                      <p className="text-xs text-muted-foreground">{reviewText.length} characters</p>
+                      <p className='text-muted-foreground text-xs'>
+                        {reviewText.length} characters
+                      </p>
                     </div>
 
-                    <Button type="submit" className="w-full">
+                    <Button type='submit' className='w-full'>
                       Submit Review
                     </Button>
                   </form>
@@ -161,5 +173,5 @@ export default function WriteReviewPage() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
